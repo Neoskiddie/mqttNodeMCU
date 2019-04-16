@@ -14,12 +14,14 @@ ESP8266WebServer server(80); //Server on port 80
 
 #define LED 2
 
+String Temperature;
 //===============================================================
 // This routine is executed when you open its IP in browser
 //===============================================================
 void handleRoot() {
  Serial.println("You called root page");
  String s = MAIN_page; //Read HTML contents
+ s.replace("@@TEMP@@", Temperature);
  server.send(200, "text/html", s); //Send web page
 }
  
@@ -78,6 +80,7 @@ void myMessageArrived(char* topic, byte* payload, unsigned int length) {
    
   // Print the message to the serial port
   Serial.println(message);
+  Temperature = message;
 }
 
 // This function connects to the MQTT broker
